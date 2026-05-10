@@ -1,0 +1,18 @@
+{
+  "name": "cinesync",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.5.0",
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.0.11"
+  },
+  "dependencies": {
+    "firebase": "^10.14.1"
+  }
+}

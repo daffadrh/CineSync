@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineSync - Discover</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/globals.css">
+</head>
+<body class="flex h-screen overflow-hidden text-gray-200">
+
+    <div id="sidebar-container" class="z-20 h-full flex-shrink-0"></div>
+
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+        <div id="header-container" class="z-10 flex-shrink-0 w-full"></div>
+
+        <div class="flex-1 overflow-y-auto p-8" id="mainScrollContainer">
+            
+            <div id="heroSection" class="content-transition fade-in-up origin-top">
+                <div class="mb-2 uppercase text-xs font-semibold tracking-widest text-gray-500">Explore the cinematic world</div>
+                <h2 class="text-4xl font-serif mb-10">Find your next <span class="text-yellow-500 italic">obsession.</span></h2>
+
+                <div class="mb-12">
+                    <h3 class="text-sm font-semibold mb-4 text-white uppercase tracking-wider">How are you feeling today?</h3>
+                    <div class="flex flex-wrap gap-4" id="moodFilters">
+                        <button data-genre="28" class="mood-btn flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1a1a1a] border border-[#333] hover:border-yellow-500/50 hover:bg-[#222] transition-colors text-sm font-medium"><i class="fa-solid fa-fire text-red-500"></i> Action-Packed</button>
+                        <button data-genre="18" class="mood-btn flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1a1a1a] border border-[#333] hover:border-yellow-500/50 hover:bg-[#222] transition-colors text-sm font-medium"><i class="fa-solid fa-face-sad-tear text-blue-400"></i> Tearjerker</button>
+                        <button data-genre="35" class="mood-btn flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1a1a1a] border border-[#333] hover:border-yellow-500/50 hover:bg-[#222] transition-colors text-sm font-medium"><i class="fa-solid fa-face-laugh-squint text-yellow-500"></i> Upbeat Comedy</button>
+                        <button data-genre="9648" class="mood-btn flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1a1a1a] border border-[#333] hover:border-yellow-500/50 hover:bg-[#222] transition-colors text-sm font-medium"><i class="fa-solid fa-brain text-purple-500"></i> Mind-Bending</button>
+                        <button data-genre="10751" class="mood-btn flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1a1a1a] border border-[#333] hover:border-yellow-500/50 hover:bg-[#222] transition-colors text-sm font-medium"><i class="fa-solid fa-mug-hot text-green-500"></i> Calm & Relaxing</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="contentSection" class="content-transition fade-in-up">
+                <div class="flex items-center justify-between w-full mb-6">
+                    <div class="flex items-center gap-2" id="titleContainer">
+                        <i class="fa-solid fa-fire text-orange-500" id="titleIcon"></i>
+                        <h3 class="text-lg font-bold text-white uppercase tracking-wider" id="sectionTitle">Trending This Week</h3>
+                    </div>
+                    <div id="searchControls" class="hidden flex items-center gap-6">
+                        <label class="flex items-center gap-2 text-sm text-gray-300 cursor-pointer hover:text-white transition group select-none">
+                            <input type="checkbox" id="exactMatchToggle" class="accent-yellow-500 w-4 h-4 cursor-pointer">
+                            <span class="group-hover:text-yellow-500 transition">Exact Matches</span>
+                        </label>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-arrow-down-short-wide text-gray-400"></i>
+                            <select id="sortDropdown" class="bg-[#1a1a1a] border border-[#333] text-sm text-white rounded-lg px-3 py-2 outline-none focus:border-yellow-500 transition-colors cursor-pointer">
+                                <option value="relevancy">Sort: Relevancy</option>
+                                <option value="az">Sort: A to Z</option>
+                                <option value="newest">Sort: Newest First</option>
+                                <option value="oldest">Sort: Oldest First</option>
+                                <option value="highest">Sort: Highest Rating First</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="movieGridWrapper" class="content-transition fade-in-up w-full">
+                    <div id="movieContainer" class="flex gap-6 overflow-x-auto hide-scrollbar pb-4 snap-x"></div>
+                    <div id="searchFooter" class="hidden text-center text-gray-500 py-10 text-sm font-medium">can't find what you looking for?, use more specific title</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="modal-container"></div>
+
+    <script type="module" src="../js/pages/discover.js"></script>
+</body>
+</html>
