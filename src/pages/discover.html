@@ -5,13 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CineSync - Discover</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode:'class' }</script>
     <link rel="stylesheet" href="../css/globals.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+        body { font-family:'Inter',sans-serif; background:#0d0d0d; color:#fff; }
+        .font-serif { font-family:'Playfair Display',serif; }
+        ::-webkit-scrollbar{width:8px} ::-webkit-scrollbar-track{background:#121212}
+        ::-webkit-scrollbar-thumb{background:#333;border-radius:4px} ::-webkit-scrollbar-thumb:hover{background:#555}
+        .hide-scrollbar::-webkit-scrollbar{display:none} .hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+    </style>
 </head>
-<body class="flex h-screen overflow-hidden text-gray-200">
+<body class="flex h-screen overflow-hidden dark">
 
-    <div id="sidebar-container" class="z-20 h-full flex-shrink-0"></div>
+    <!-- SIDEBAR -->
+    <aside id="sidebar-container" class="bg-[#141414] border-r border-[#2a2a2a] flex flex-col h-full flex-shrink-0 z-20" style="width:240px;"></aside>
 
-    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+    <main class="flex-1 flex flex-col h-full overflow-hidden">
+        <!-- HEADER -->
         <div id="header-container" class="z-10 flex-shrink-0 w-full"></div>
 
         <div class="flex-1 overflow-y-auto p-8" id="mainScrollContainer">
