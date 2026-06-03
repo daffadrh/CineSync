@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineSync - Profile</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode:'class' }</script>
+    <link rel="stylesheet" href="../css/globals.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+        body { font-family:'Inter',sans-serif; background:#0d0d0d; color:#fff; }
+        .font-serif { font-family:'Playfair Display',serif; }
+        ::-webkit-scrollbar{width:8px} ::-webkit-scrollbar-track{background:#121212}
+        ::-webkit-scrollbar-thumb{background:#333;border-radius:4px} ::-webkit-scrollbar-thumb:hover{background:#555}
+        .hide-scrollbar::-webkit-scrollbar{display:none} .hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden dark">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar-container" class="bg-[#141414] border-r border-[#2a2a2a] flex flex-col h-full flex-shrink-0 z-20" style="width:240px;"></aside>
+
+    <main class="flex-1 flex flex-col h-full overflow-hidden">
+        <!-- HEADER -->
+        <div id="header-container" class="z-10 flex-shrink-0 w-full"></div>
+
+        <div class="flex-1 overflow-y-auto p-8">
+
+            <h2 class="text-3xl font-serif mb-6">Profile</h2>
+
+            <!-- Profile Card -->
+            <div class="bg-[#141414] border border-[#2a2a2a] rounded-2xl p-6 mb-6 flex items-center gap-6">
+                <div class="w-28 h-28 rounded-xl bg-gray-500 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    <i class="fa-solid fa-user text-gray-300 text-4xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-2xl font-bold text-white mb-1" id="profileDisplayName">Display Name</h3>
+                    <p class="text-gray-400 mb-0.5 text-sm" id="profileUsername">username</p>
+                    <p class="text-gray-400 text-sm" id="profileEmail">email@mail.com</p>
+                </div>
+                <button id="editProfileBtn"
+                        class="px-4 py-2 bg-yellow-500 hover:bg-yellow-400 text-black text-sm font-semibold
+                               rounded-lg transition-colors flex-shrink-0">
+                    Edit Profile
+                </button>
+            </div>
+
+            <!-- Friends + Recommendations Grid -->
+            <div class="grid grid-cols-2 gap-6">
+
+                <!-- Friends Card -->
+                <div class="bg-[#141414] border border-[#2a2a2a] rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-5">
+                        <h3 class="text-base font-bold text-white">Friends</h3>
+                        <div class="flex items-center gap-3">
+                            <button id="addFriendBtn"
+                                    class="px-3 py-1.5 bg-yellow-500 hover:bg-yellow-400 text-black text-xs
+                                           font-semibold rounded-lg transition-colors flex items-center gap-1.5">
+                                <i class="fa-solid fa-plus text-xs"></i> Add Friend
+                            </button>
+                            <button class="text-yellow-500 hover:text-yellow-400 text-sm font-medium transition-colors whitespace-nowrap">
+                                View all &gt;
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex flex-col" id="friendsList"></div>
+                </div>
+
+                <!-- My Recommendations Card -->
+                <div class="bg-[#141414] border border-[#2a2a2a] rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-5">
+                        <h3 class="text-base font-bold text-white">My Recommendations</h3>
+                        <button class="text-yellow-500 hover:text-yellow-400 text-sm font-medium transition-colors whitespace-nowrap">
+                            View all &gt;
+                        </button>
+                    </div>
+                    <div class="flex flex-col gap-3" id="recsList"></div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Friend Popup -->
+    <div id="addFriendOverlay"
+         class="fixed inset-0 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-250">
+        <div id="addFriendBackdrop" class="absolute inset-0 bg-black/60"></div>
+        <div class="relative bg-[#141414] border border-[#2a2a2a] rounded-[18px] p-8 w-[420px] shadow-2xl">
+            <h3 class="font-serif text-2xl font-semibold italic text-yellow-500 text-center mb-6">Add A Friend</h3>
+            <div class="relative mb-6">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                    <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+                </div>
+                <input type="text" id="addFriendInput"
+                       class="w-full bg-white text-gray-800 text-sm rounded-lg pl-10 pr-4 py-3 outline-none
+                              placeholder-gray-400 border-none"
+                       placeholder="Search name...">
+            </div>
+            <div class="flex items-center justify-center gap-4">
+                <button id="addFriendCancelBtn"
+                        class="px-8 py-2.5 bg-[#2a2a2a] hover:bg-[#333] text-white text-sm font-medium
+                               rounded-lg transition-colors border border-[#444]">
+                    Cancel
+                </button>
+                <button id="addFriendConfirmBtn"
+                        class="px-8 py-2.5 bg-yellow-500 hover:bg-yellow-400 text-black text-sm font-semibold
+                               rounded-lg transition-colors">
+                    Add
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommend This Popup -->
+    <div id="recommendOverlay"
+         class="fixed inset-0 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-250">
+        <div id="recommendBackdrop" class="absolute inset-0 bg-black/60"></div>
+        <div class="relative bg-[#141414] border border-[#2a2a2a] rounded-[18px] p-8 w-[440px] shadow-2xl">
+            <h3 class="font-serif text-2xl font-semibold italic text-yellow-500 text-center mb-4">Recommend this</h3>
+            <p class="text-white font-bold text-lg leading-tight mb-1" id="recommendTitle">Movie Title</p>
+            <p class="text-gray-500 text-xs mb-5" id="recommendGenres">Genre · Genre</p>
+
+            <!-- TO -->
+            <div class="mb-5">
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">To</p>
+                <div class="flex items-center gap-3 flex-wrap" id="recommendFriends"></div>
+            </div>
+
+            <!-- Note -->
+            <div class="mb-6">
+                <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Add A Note</p>
+                <textarea id="recommendNote"
+                          class="w-full bg-[#1a1a1a] border border-[#333] text-white text-sm rounded-lg p-3
+                                 outline-none focus:border-yellow-500 transition-colors resize-none placeholder-gray-500"
+                          rows="3"
+                          placeholder="Why should they watch this?"></textarea>
+            </div>
+
+            <div class="flex items-center justify-center gap-4">
+                <button id="recommendCancelBtn"
+                        class="px-8 py-2.5 bg-[#2a2a2a] hover:bg-[#333] text-white text-sm font-medium
+                               rounded-lg transition-colors border border-[#444]">
+                    Cancel
+                </button>
+                <button id="recommendShareBtn"
+                        class="px-8 py-2.5 bg-yellow-500 hover:bg-yellow-400 text-black text-sm font-semibold
+                               rounded-lg transition-colors">
+                    Share
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Popup -->
+    <div id="editProfileOverlay"
+         class="fixed inset-0 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-250">
+        <div id="editProfileBackdrop" class="absolute inset-0 bg-black/60"></div>
+        <div class="relative bg-[#141414] border border-[#2a2a2a] rounded-[18px] p-8 w-[440px] shadow-2xl">
+            <h3 class="font-serif text-2xl font-semibold italic text-yellow-500 text-center mb-6">Edit Profile</h3>
+            <div class="flex flex-col gap-4 mb-6">
+                <div>
+                    <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1.5">Display Name</label>
+                    <input type="text" id="editDisplayName"
+                           class="w-full bg-[#1a1a1a] border border-[#333] text-white text-sm rounded-lg px-4 py-2.5
+                                  outline-none focus:border-yellow-500 transition-colors placeholder-gray-500">
+                </div>
+                <div>
+                    <label class="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1.5">Username</label>
+                    <input type="text" id="editUsername"
+                           class="w-full bg-[#1a1a1a] border border-[#333] text-white text-sm rounded-lg px-4 py-2.5
+                                  outline-none focus:border-yellow-500 transition-colors placeholder-gray-500">
+                </div>
+            </div>
+            <div class="flex items-center justify-center gap-4">
+                <button id="editProfileCancelBtn"
+                        class="px-8 py-2.5 bg-[#2a2a2a] hover:bg-[#333] text-white text-sm font-medium
+                               rounded-lg transition-colors border border-[#444]">
+                    Cancel
+                </button>
+                <button id="editProfileSaveBtn"
+                        class="px-8 py-2.5 bg-yellow-500 hover:bg-yellow-400 text-black text-sm font-semibold
+                               rounded-lg transition-colors">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../js/pages/profile.js"></script>
+</body>
+</html>
