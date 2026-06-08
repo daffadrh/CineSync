@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CineSync – Trending Clips</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>tailwind.config = { darkMode:'class' }</script>
+    <link rel="stylesheet" href="../css/globals.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
         body { font-family:'Inter',sans-serif; background:#0d0d0d; color:#fff; }
@@ -46,60 +45,19 @@
 
         <section class="mb-12">
             <h3 class="text-xs font-bold uppercase tracking-widest text-white mb-5">Want to watch something <span class="text-yellow-500">NEW</span>?</h3>
-            <div class="clips-grid" id="grid1"></div>
+            <div class="clips-grid" id="newClipsGrid"></div>
         </section>
         <section class="mb-12">
             <h3 class="text-xs font-bold uppercase tracking-widest text-white mb-5">Clips that are trending in your <span class="text-yellow-500">AREA</span></h3>
-            <div class="clips-grid" id="grid2"></div>
+            <div class="clips-grid" id="areaClipsGrid"></div>
         </section>
         <section class="mb-12">
             <h3 class="text-xs font-bold uppercase tracking-widest text-white mb-5">Feeling <span class="text-yellow-500">NOSTALGIC</span>? Here are some clips that you have watched</h3>
-            <div class="clips-grid" id="grid3"></div>
+            <div class="clips-grid" id="nostalgicClipsGrid"></div>
         </section>
     </div>
 </main>
 
-<script type="module">
-import { renderSidebar } from '../js/components/sidebar.js';
-import { renderHeader }  from '../js/components/header.js';
-import { MOCK_CLIPS }    from '../js/services/clips-data.js';
-
-renderSidebar('sidebar-container', 'trending-clips');
-renderHeader('header-container');
-
-const CLIPS = MOCK_CLIPS;
-
-function makeCard(clip) {
-    const tagStr = Array.isArray(clip.tags) ? clip.tags.join(' ') : clip.tags;
-    const div = document.createElement('div');
-    div.className = 'clip-card group cursor-pointer';
-    div.innerHTML = `
-        <a href="clip-viewer.html?id=${clip.id}">
-            <div class="clip-thumb ${clip.gradientClass} relative w-full rounded-xl overflow-hidden border border-[#2a2a2a] mb-2.5" style="aspect-ratio:9/16;">
-                <button class="ctx-btn absolute top-2 right-2 w-7 h-7 bg-black/60 hover:bg-black/80 rounded-full flex items-center justify-center text-white border-none cursor-pointer" onclick="event.preventDefault()">
-                    <i class="fa-solid fa-ellipsis-vertical text-xs pointer-events-none"></i>
-                </button>
-            </div>
-        </a>
-        <div class="flex items-start justify-between gap-2 px-0.5">
-            <a href="clip-viewer.html?id=${clip.id}" class="min-w-0 flex-1 hover:opacity-80 transition-opacity">
-                <p class="text-sm font-semibold text-white truncate leading-tight mb-0.5" title="${clip.caption}">${clip.caption}</p>
-                <p class="text-xs text-gray-500 truncate" title="${tagStr}">${tagStr}</p>
-            </a>
-            <button class="text-gray-500 hover:text-white transition-colors mt-0.5 bg-transparent border-none cursor-pointer">
-                <i class="fa-solid fa-ellipsis-vertical text-sm"></i>
-            </button>
-        </div>`;
-    return div;
-}
-
-function fill(id, clips) {
-    const g = document.getElementById(id);
-    clips.forEach(c => g.appendChild(makeCard(c)));
-}
-fill('grid1', CLIPS.slice(0,5));
-fill('grid2', CLIPS.slice(5,10));
-fill('grid3', CLIPS.slice(10,15));
-</script>
+<script type="module" src="../js/pages/trending-clips.js"></script>
 </body>
 </html>

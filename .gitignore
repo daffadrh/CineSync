@@ -1,2 +1,6 @@
 test.html
 node_modules
+.env
+server/service-account.json
+dist
+.claude/settings.local.json

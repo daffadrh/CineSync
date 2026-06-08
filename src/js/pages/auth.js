@@ -1,16 +1,20 @@
 import { auth } from '../services/db-config.js';
-import { 
-    createUserWithEmailAndPassword, 
-    signInWithEmailAndPassword, 
-    signOut, 
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
     onAuthStateChanged,
     GoogleAuthProvider,
-    signInWithPopup
+    signInWithPopup,
+    updateProfile
 } from "firebase/auth";
 
-export async function registerUser(email, password) {
+export async function registerUser(email, password, displayName) {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        if (displayName) {
+            await updateProfile(userCredential.user, { displayName });
+        }
         return userCredential.user;
     } catch (error) {
         throw error;

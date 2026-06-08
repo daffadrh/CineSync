@@ -11,7 +11,7 @@ export function renderHeader(containerId) {
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
-            <div class="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center overflow-hidden border border-[#333] cursor-pointer flex-shrink-0" onclick="window.location.href='profile.html'">
+            <div class="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center overflow-hidden border border-[#333] cursor-pointer flex-shrink-0" onclick="window.location.href='/profile'">
                 <i class="fa-solid fa-user text-gray-300"></i>
             </div>
         </header>

@@ -175,9 +175,28 @@ export const MOCK_CLIPS = [
 ];
 
 export const MOCK_FRIENDS = [
-    { initial: 'C', color: '#c0392b' },
-    { initial: 'F', color: '#7c3aed' },
-    { initial: 'G', color: '#9333ea' },
-    { initial: 'J', color: '#16a34a' },
-    { initial: 'Z', color: '#6b7280' },
+    { uid: 'uid_2', username: 'chemcrazy', displayName: 'Carlos Mendes', initial: 'C', color: '#c0392b' },
+    { uid: 'uid_3', username: 'finnwatches', displayName: 'Finn Okafor', initial: 'F', color: '#7c3aed' },
+    { uid: 'uid_4', username: 'gigi_binge', displayName: 'Gianna Russo', initial: 'G', color: '#9333ea' },
+    { uid: 'uid_5', username: 'just_jordan', displayName: 'Jordan Lee', initial: 'J', color: '#16a34a' },
+    { uid: 'uid_6', username: 'zaracinephile', displayName: 'Zara Whitfield', initial: 'Z', color: '#6b7280' },
+];
+
+export const MOCK_USER = {
+    uid: 'mock-uid-01',
+    username: 'azharha77',
+    displayName: 'Azhar Hafiza',
+    email: 'azhar@example.com',
+    avatarUrl: null,
+    bio: 'TV obsessive. Breaking Bad apologist. Always hunting for the next great cliffhanger.',
+    joinedAt: '2026-01-12T00:00:00Z',
+    friendIds: ['uid_2', 'uid_3', 'uid_4'],
+};
+
+export const MOCK_WATCHLIST = [
+    { id: 'w01', movieId: 1396, title: 'Breaking Bad', posterPath: null, addedAt: '2026-03-01T00:00:00Z', status: 'watching' },
+    { id: 'w02', movieId: 1405, title: 'Better Call Saul', posterPath: null, addedAt: '2026-02-20T00:00:00Z', status: 'watching' },
+    { id: 'w03', movieId: 1438, title: 'The Wire', posterPath: null, addedAt: '2026-02-10T00:00:00Z', status: 'planned' },
+    { id: 'w04', movieId: 1668, title: 'Futurama', posterPath: null, addedAt: '2026-01-25T00:00:00Z', status: 'watched' },
+    { id: 'w05', movieId: 1399, title: 'Game of Thrones', posterPath: null, addedAt: '2026-01-15T00:00:00Z', status: 'watched' },
 ];

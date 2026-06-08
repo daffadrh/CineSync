@@ -6,7 +6,7 @@ export function createClipCard(clip) {
     const tagsStr = Array.isArray(clip.tags) ? clip.tags.join(' ') : clip.tags;
 
     card.innerHTML = `
-        <a href="clip-viewer.html?id=${clip.id}" class="block">
+        <a href="/clip?id=${clip.id}" class="block">
             <div class="clip-thumb ${clip.gradientClass} relative w-full rounded-xl overflow-hidden
                         border border-[#2a2a2a] group-hover:border-[#555] transition-colors mb-2.5"
                  style="aspect-ratio:9/16;">
@@ -19,9 +19,9 @@ export function createClipCard(clip) {
             </div>
         </a>
         <div class="flex items-start justify-between gap-2 px-0.5">
-            <a href="clip-viewer.html?id=${clip.id}" class="min-w-0 flex-1 hover:opacity-80 transition-opacity">
-                <p class="text-sm font-semibold text-white truncate leading-tight mb-0.5">${clip.title}</p>
-                <p class="text-xs text-gray-500">${tagsStr}</p>
+            <a href="/clip?id=${clip.id}" class="min-w-0 flex-1 hover:opacity-80 transition-opacity">
+                <p class="text-sm font-semibold text-white truncate leading-tight mb-0.5" title="${clip.caption}">${clip.caption}</p>
+                <p class="text-xs text-gray-500 truncate" title="${tagsStr}">${tagsStr}</p>
             </a>
             <button class="text-gray-500 hover:text-white transition-colors mt-0.5 flex-shrink-0
                            bg-transparent border-none cursor-pointer" data-stop>

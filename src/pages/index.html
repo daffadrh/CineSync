@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineSync – Home</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/globals.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+        body { font-family:'Inter',sans-serif; background:#0d0d0d; color:#fff; }
+        .font-serif { font-family:'Playfair Display',serif; }
+        ::-webkit-scrollbar{width:8px} ::-webkit-scrollbar-track{background:#121212}
+        ::-webkit-scrollbar-thumb{background:#333;border-radius:4px} ::-webkit-scrollbar-thumb:hover{background:#555}
+        .hide-scrollbar::-webkit-scrollbar{display:none} .hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+        .clip-grad-1 {background:linear-gradient(160deg,#3a2a1a,#c8922a)}
+        .clip-grad-2 {background:linear-gradient(160deg,#1a2a3a,#2a8ac8)}
+        .clip-grad-3 {background:linear-gradient(160deg,#2a1a3a,#8a2ac8)}
+        .clip-grad-4 {background:linear-gradient(160deg,#1a3a2a,#2ac88a)}
+        .clip-grad-5 {background:linear-gradient(160deg,#3a1a2a,#c82a6a)}
+        .clip-grad-6 {background:linear-gradient(160deg,#2a2a1a,#c8c02a)}
+        .clip-grad-7 {background:linear-gradient(160deg,#1a3a3a,#2ac8c0)}
+        .clip-grad-8 {background:linear-gradient(160deg,#3a2a2a,#c84a2a)}
+        .clip-grad-9 {background:linear-gradient(160deg,#2a1a1a,#c8402a)}
+        .clip-grad-10{background:linear-gradient(160deg,#1a2a1a,#4ac82a)}
+        .clip-row { display:flex; gap:20px; }
+        .clip-row .clip-card { width:220px; flex-shrink:0; }
+        .clip-card .ctx-btn { opacity:0; transition:opacity .2s; }
+        .clip-card:hover .ctx-btn { opacity:1; }
+        .clip-card .clip-thumb { transition:border-color .2s; }
+        .clip-card:hover .clip-thumb { border-color:#555 !important; }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden dark">
+
+<!-- SIDEBAR -->
+<aside id="sidebar-container" class="bg-[#141414] border-r border-[#2a2a2a] flex flex-col h-full flex-shrink-0 z-20" style="width:240px;"></aside>
+
+<!-- MAIN -->
+<main class="flex-1 flex flex-col h-full overflow-hidden">
+    <div id="header-container" class="z-10 flex-shrink-0 w-full"></div>
+
+    <div class="flex-1 overflow-y-auto p-8" id="mainScrollContainer">
+
+        <div id="heroSection" class="content-transition fade-in-up origin-top mb-12">
+            <p class="mb-2 uppercase text-xs font-semibold tracking-widest text-gray-500">Your front row seat</p>
+            <h2 class="text-4xl font-serif mb-3" id="greeting">Welcome back<span class="text-yellow-500 italic">.</span></h2>
+            <p class="text-sm text-gray-400 max-w-xl mb-6" id="greetingSubtitle">Here's what's worth your time today — picks tuned to what you watch, and what your friends can't stop sharing.</p>
+            <div class="flex flex-wrap gap-3">
+                <a href="discover.html" class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-yellow-500 hover:bg-yellow-400 text-black text-sm font-semibold transition-colors">
+                    <i class="fa-regular fa-compass"></i> Discover something new
+                </a>
+                <a href="trending-clips.html" class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1a1a1a] border border-[#333] hover:border-yellow-500/50 hover:bg-[#222] text-sm font-medium transition-colors">
+                    <i class="fa-solid fa-chart-column text-orange-500"></i> See what's trending
+                </a>
+            </div>
+        </div>
+
+        <section class="content-transition fade-in-up mb-12">
+            <div class="flex items-center gap-2 mb-5">
+                <i class="fa-solid fa-star text-yellow-500"></i>
+                <h3 class="text-sm font-bold uppercase tracking-widest text-white">Picks for you</h3>
+            </div>
+            <div class="clip-row overflow-x-auto hide-scrollbar pb-2" id="picksGrid"></div>
+        </section>
+
+        <section class="content-transition fade-in-up mb-12">
+            <div class="flex items-center justify-between mb-5">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-share-nodes text-purple-400"></i>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-white">What your friends are watching</h3>
+                </div>
+                <a href="friend-recs.html" class="text-xs font-semibold text-yellow-500 hover:text-yellow-400 transition-colors uppercase tracking-wider">See all</a>
+            </div>
+            <div class="flex items-center gap-3 mb-5" id="friendStrip"></div>
+            <div class="clip-row overflow-x-auto hide-scrollbar pb-2" id="friendsGrid"></div>
+        </section>
+
+        <section class="content-transition fade-in-up mb-8">
+            <div class="flex items-center gap-2 mb-5">
+                <i class="fa-solid fa-compass text-blue-400"></i>
+                <h3 class="text-sm font-bold uppercase tracking-widest text-white">Keep exploring</h3>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                <a href="discover.html" class="group bg-[#141414] border border-[#2a2a2a] hover:border-yellow-500/40 rounded-2xl p-6 transition-colors">
+                    <i class="fa-regular fa-compass text-2xl text-yellow-500 mb-4 block"></i>
+                    <h4 class="text-white font-semibold mb-1">Discover</h4>
+                    <p class="text-xs text-gray-500">Browse moods, genres, and trending titles tailored to how you feel.</p>
+                </a>
+                <a href="trending-clips.html" class="group bg-[#141414] border border-[#2a2a2a] hover:border-yellow-500/40 rounded-2xl p-6 transition-colors">
+                    <i class="fa-solid fa-chart-column text-2xl text-orange-500 mb-4 block"></i>
+                    <h4 class="text-white font-semibold mb-1">Trending Clips</h4>
+                    <p class="text-xs text-gray-500">Catch the moments everyone's talking about right now.</p>
+                </a>
+                <a href="watchlist.html" class="group bg-[#141414] border border-[#2a2a2a] hover:border-yellow-500/40 rounded-2xl p-6 transition-colors">
+                    <i class="fa-solid fa-list-ul text-2xl text-green-400 mb-4 block"></i>
+                    <h4 class="text-white font-semibold mb-1">Watchlist</h4>
+                    <p class="text-xs text-gray-500">Pick up where you left off with shows you've saved for later.</p>
+                </a>
+            </div>
+        </section>
+    </div>
+</main>
+
+<script type="module" src="../js/pages/home.js"></script>
+</body>
+</html>
