@@ -18,8 +18,8 @@ watchlistRouter.get('/', async (req, res) => {
 
 watchlistRouter.post('/', async (req, res) => {
     try {
-        const { movieId, title, posterPath, status } = req.body;
-        const newEntry = await addToWatchlist(req.user.uid, { movieId, title, posterPath, status });
+        const { movieId, title, posterPath, backdropPath, status } = req.body;
+        const newEntry = await addToWatchlist(req.user.uid, { movieId, title, posterPath, backdropPath, status });
         res.status(201).json({ entry: newEntry });
     } catch (error) {
         console.error('Error adding to watchlist:', error);

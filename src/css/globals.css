@@ -67,3 +67,22 @@ body {
 .exact-removed {
     display: none !important;
 }
+
+/* Clip gradient backgrounds */
+.clip-grad-1  { background: linear-gradient(160deg, #3a2a1a, #c8922a); }
+.clip-grad-2  { background: linear-gradient(160deg, #1a2a3a, #2a8ac8); }
+.clip-grad-3  { background: linear-gradient(160deg, #2a1a3a, #8a2ac8); }
+.clip-grad-4  { background: linear-gradient(160deg, #1a3a2a, #2ac88a); }
+.clip-grad-5  { background: linear-gradient(160deg, #3a1a2a, #c82a6a); }
+.clip-grad-6  { background: linear-gradient(160deg, #2a2a1a, #c8c02a); }
+.clip-grad-7  { background: linear-gradient(160deg, #1a3a3a, #2ac8c0); }
+.clip-grad-8  { background: linear-gradient(160deg, #3a2a2a, #c84a2a); }
+.clip-grad-9  { background: linear-gradient(160deg, #2a1a1a, #c8402a); }
+.clip-grad-10 { background: linear-gradient(160deg, #1a2a1a, #4ac82a); }
+
+/* Clip listing grid */
+.clips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 220px));
+    gap: 20px;
+}

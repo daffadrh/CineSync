@@ -9,11 +9,12 @@ export async function getWatchlist(uid) {
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 }
 
-export async function addToWatchlist(uid, { movieId, title, posterPath, status = 'planned' } ) {
+export async function addToWatchlist(uid, { movieId, title, posterPath, backdropPath, status = 'planned' } ) {
     const ref = await watchlistRef(uid).add({
         movieId,
         title,
         posterPath,
+        backdropPath: backdropPath ?? null,
         status,
         addedAt: new Date().toISOString(),
     });

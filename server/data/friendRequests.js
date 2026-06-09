@@ -110,6 +110,14 @@ export async function acceptFriendRequest(requestId, uid) {
     });
 }
 
+export async function listOutgoingFriendRequests(uid) {
+    const snapshot = await adminDb.collection('friendRequests')
+                                  .where('fromUid', '==', uid)
+                                  .where('status', '==', 'pending')
+                                  .get();
+    return snapshot.docs.map(doc => doc.data().toUid);
+}
+
 export async function rejectFriendRequest(requestId, uid) {
     const ref = adminDb.collection('friendRequests').doc(requestId);
     const doc = await ref.get();

@@ -1,10 +1,20 @@
 import { Router } from "express";
 import { requireAuth } from "../middleware/auth.js";
-import { sendFriendRequest, listFriendRequests, acceptFriendRequest, rejectFriendRequest } from "../data/friendRequests.js";
+import { sendFriendRequest, listFriendRequests, listOutgoingFriendRequests, acceptFriendRequest, rejectFriendRequest } from "../data/friendRequests.js";
 
 export const friendRequestsRouter = Router();
 
 friendRequestsRouter.use(requireAuth);
+
+friendRequestsRouter.get('/outgoing', async (req, res) => {
+    try {
+        const sentUids = await listOutgoingFriendRequests(req.user.uid);
+        res.json({ sentUids });
+    } catch (error) {
+        console.error('Error listing outgoing friend requests:', error);
+        res.status(500).json({ error: 'Failed to list outgoing friend requests' });
+    }
+});
 
 friendRequestsRouter.get('/', async (req, res) => {
     try {
