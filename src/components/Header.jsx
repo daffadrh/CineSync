@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import { logoutUser } from '../services/auth.js';
 
 export default function Header() {
     const navigate = useNavigate();
@@ -16,6 +17,11 @@ export default function Header() {
         } else {
             navigate('/discover');
         }
+    }
+
+    async function handleLogout() {
+        await logoutUser();
+        navigate('/login');
     }
 
     return (
@@ -52,6 +58,13 @@ export default function Header() {
                         : <i className="fa-solid fa-user text-gray-300" />
                     }
                 </div>
+                <button
+                    onClick={handleLogout}
+                    title="Log out"
+                    className="w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-[#1a1a1a] transition-colors"
+                >
+                    <i className="fa-solid fa-arrow-right-from-bracket text-sm" />
+                </button>
             </div>
         </header>
     );

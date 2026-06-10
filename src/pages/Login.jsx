@@ -53,7 +53,7 @@ export default function Login() {
                     <Link to="/discover" className="inline-block transition-transform hover:scale-105">
                         <h1 className="text-4xl font-serif font-bold italic tracking-wide text-white">CineSync</h1>
                     </Link>
-                    <p className="text-sm text-gray-500 mt-2">Welcome back. Let's pick up where you left off.</p>
+                    {/* <p className="text-sm text-gray-500 mt-2">Welcome back. Let's pick up where you left off.</p> */}
                 </div>
 
                 <div className="bg-[#141414] border border-[#2a2a2a] rounded-2xl p-8 shadow-2xl">

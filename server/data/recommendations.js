@@ -51,3 +51,30 @@ export async function listRecommendations(uid) {
         };
     });
 }
+
+export async function listSentRecommendations(uid) {
+    const snapshot = await recommendationsRef()
+                            .where('fromUid', '==', uid)
+                            .orderBy('createdAt', 'desc')
+                            .get();
+
+    if (snapshot.empty) return [];
+
+    const recommendations = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const refs = recommendations.map(rec => adminDb.collection('users').doc(rec.toUid));
+    const userDocs = await adminDb.getAll(...refs);
+
+    return recommendations.map((rec, i) => {
+        const { username, displayName, avatarUrl } = userDocs[i].data() ?? {};
+        return {
+            id: rec.id,
+            to: { uid: rec.toUid, username, displayName, avatarUrl },
+            movieId: rec.movieId,
+            title: rec.title,
+            posterPath: rec.posterPath,
+            genres: rec.genres,
+            note: rec.note,
+            createdAt: rec.createdAt,
+        };
+    });
+}

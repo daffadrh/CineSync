@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { getRecommendations, getSentRecommendations } from '../services/recommendations-service.js';
 import { useWatchlist } from '../context/WatchlistContext.jsx';
 import { IMG_BASE_URL } from '../services/tmdb-api.js';
+import SendRecommendationModal from '../components/SendRecommendationModal.jsx';
 
 const TABS = [
     { key: 'received', label: 'Received' },
@@ -14,24 +15,35 @@ export default function Recommendations() {
     const { watchlistMap, add } = useWatchlist();
 
     const [received, setReceived] = useState([]);
-    const [sent, setSent] = useState(null); // null = endpoint not yet available
+    const [sent, setSent] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('received');
+    const [sendModalOpen, setSendModalOpen] = useState(false);
+
+    const refreshSent = useCallback(async () => {
+        const token = await currentUser.getIdToken();
+        const data = await getSentRecommendations(token);
+        setSent(data.recommendations);
+    }, [currentUser]);
 
     useEffect(() => {
         async function load() {
             const token = await currentUser.getIdToken();
-            // allSettled so a 404 on the unbuilt /sent endpoint doesn't crash the page
-            const [receivedResult, sentResult] = await Promise.allSettled([
+            const [receivedData, sentData] = await Promise.all([
                 getRecommendations(token),
                 getSentRecommendations(token),
             ]);
-            setReceived(receivedResult.status === 'fulfilled' ? receivedResult.value.recommendations : []);
-            setSent(sentResult.status === 'fulfilled' ? sentResult.value.recommendations : null);
+            setReceived(receivedData.recommendations);
+            setSent(sentData.recommendations);
             setLoading(false);
         }
         load();
     }, []);
+
+    function handleCloseSendModal() {
+        setSendModalOpen(false);
+        refreshSent();
+    }
 
     if (loading) {
         return (
@@ -58,29 +70,41 @@ export default function Recommendations() {
                 <div className="max-w-screen-xl mx-auto w-full flex flex-col flex-1 min-h-0">
 
                     {/* Tabs */}
-                    <div className="flex gap-2 mb-6 flex-shrink-0">
-                        {TABS.map(tab => (
+                    <div className="flex items-center justify-between gap-2 mb-6 flex-shrink-0">
+                        <div className="flex gap-2">
+                            {TABS.map(tab => (
+                                <button
+                                    key={tab.key}
+                                    onClick={() => setActiveTab(tab.key)}
+                                    className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                                        activeTab === tab.key
+                                            ? 'bg-yellow-500 text-black'
+                                            : 'bg-[#1a1a1a] text-gray-400 hover:text-white hover:bg-[#222]'
+                                    }`}
+                                >
+                                    {tab.label}
+                                    {tab.key === 'received' && received.length > 0 && (
+                                        <span className={`text-xs rounded-full px-1.5 py-0.5 ${
+                                            activeTab === 'received'
+                                                ? 'bg-black/20 text-black'
+                                                : 'bg-[#2a2a2a] text-gray-500'
+                                        }`}>
+                                            {received.length}
+                                        </span>
+                                    )}
+                                </button>
+                            ))}
+                        </div>
+
+                        {activeTab === 'sent' && (
                             <button
-                                key={tab.key}
-                                onClick={() => setActiveTab(tab.key)}
-                                className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                                    activeTab === tab.key
-                                        ? 'bg-yellow-500 text-black'
-                                        : 'bg-[#1a1a1a] text-gray-400 hover:text-white hover:bg-[#222]'
-                                }`}
+                                onClick={() => setSendModalOpen(true)}
+                                className="flex items-center gap-2 px-4 py-1.5 bg-yellow-500 text-black text-sm font-medium rounded-full hover:bg-yellow-400 transition-colors"
                             >
-                                {tab.label}
-                                {tab.key === 'received' && received.length > 0 && (
-                                    <span className={`text-xs rounded-full px-1.5 py-0.5 ${
-                                        activeTab === 'received'
-                                            ? 'bg-black/20 text-black'
-                                            : 'bg-[#2a2a2a] text-gray-500'
-                                    }`}>
-                                        {received.length}
-                                    </span>
-                                )}
+                                <i className="fa-solid fa-paper-plane" />
+                                Send Recommendation
                             </button>
-                        ))}
+                        )}
                     </div>
 
                     {/* Tab content — scrolls within remaining height */}
@@ -114,15 +138,7 @@ export default function Recommendations() {
                         )}
 
                         {activeTab === 'sent' && (
-                            sent === null ? (
-                                <div className="flex flex-col items-center justify-center h-full text-center">
-                                    <i className="fa-solid fa-clock text-gray-700 text-5xl mb-4" />
-                                    <p className="text-gray-400 text-sm">Sent recommendations coming soon.</p>
-                                    <p className="text-gray-600 text-xs mt-1">
-                                        This tab will show movies you've recommended to friends.
-                                    </p>
-                                </div>
-                            ) : sent.length === 0 ? (
+                            sent.length === 0 ? (
                                 <div className="flex flex-col items-center justify-center h-full text-center">
                                     <i className="fa-regular fa-paper-plane text-gray-700 text-5xl mb-4" />
                                     <p className="text-gray-400 text-sm">You haven't recommended anything yet.</p>
@@ -139,6 +155,10 @@ export default function Recommendations() {
 
                 </div>
             </div>
+
+            {sendModalOpen && (
+                <SendRecommendationModal onClose={handleCloseSendModal} />
+            )}
         </div>
     );
 }

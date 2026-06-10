@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { requireAuth } from "../middleware/auth.js";
-import { sendRecommendation, listRecommendations } from "../data/recommendations.js";
+import { sendRecommendation, listRecommendations, listSentRecommendations } from "../data/recommendations.js";
 
 export const recommendationsRouter = Router();
 
@@ -13,6 +13,16 @@ recommendationsRouter.get('/', async (req, res) => {
     } catch (error) {
         console.error('Error listing recommendations:', error);
         res.status(500).json({ error: 'Failed to list recommendations' });
+    }
+});
+
+recommendationsRouter.get('/sent', async (req, res) => {
+    try {
+        const recommendations = await listSentRecommendations(req.user.uid);
+        res.json({ recommendations });
+    } catch (error) {
+        console.error('Error listing sent recommendations:', error);
+        res.status(500).json({ error: 'Failed to list sent recommendations' });
     }
 });
 

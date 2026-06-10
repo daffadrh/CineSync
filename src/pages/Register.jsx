@@ -57,7 +57,7 @@ export default function Register() {
                     <Link to="/discover" className="inline-block transition-transform hover:scale-105">
                         <h1 className="text-4xl font-serif font-bold italic tracking-wide text-white">CineSync</h1>
                     </Link>
-                    <p className="text-sm text-gray-500 mt-2">Create an account to save clips, build watchlists, and sync with friends.</p>
+                    {/* <p className="text-sm text-gray-500 mt-2">Create an account to save clips, build watchlists, and sync with friends.</p> */}
                 </div>
 
                 <div className="bg-[#141414] border border-[#2a2a2a] rounded-2xl p-8 shadow-2xl">
