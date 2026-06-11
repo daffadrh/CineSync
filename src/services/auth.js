@@ -8,12 +8,23 @@ import {
     signInWithPopup,
     updateProfile
 } from 'firebase/auth';
+import { getMyProfile, updateProfile as updateUserProfile } from './profile-service.js';
 
 export async function registerUser(email, password, displayName) {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     if (displayName) {
         await updateProfile(userCredential.user, { displayName });
     }
+
+    // Create the backend profile (and empty friend list) immediately, with the
+    // displayName passed explicitly — the ID token's `name` claim won't reflect
+    // the updateProfile() call above until the token is next refreshed.
+    const token = await userCredential.user.getIdToken();
+    await getMyProfile(token);
+    if (displayName) {
+        await updateUserProfile(token, { displayName });
+    }
+
     return userCredential.user;
 }
 

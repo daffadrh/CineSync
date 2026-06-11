@@ -33,7 +33,7 @@ export function WatchlistProvider({ children }) {
     useEffect(() => {
         if (!currentUser) {
             setWatchlistMap(new Map());
-            setLoaded(false);
+            setLoaded(true);
             return;
         }
         setLoaded(false);

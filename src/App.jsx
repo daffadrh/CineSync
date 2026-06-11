@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
 import { WatchlistProvider } from './context/WatchlistContext.jsx';
+import { FriendRequestsProvider } from './context/FriendRequestsContext.jsx';
 
 import Layout from './components/Layout.jsx';
 
@@ -34,6 +35,7 @@ function App() {
     return (
         <AuthProvider>
             <WatchlistProvider>
+            <FriendRequestsProvider>
             <BrowserRouter>
                 <Routes>
                     {/* Guest only routes */}
@@ -72,6 +74,7 @@ function App() {
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </BrowserRouter>
+            </FriendRequestsProvider>
             </WatchlistProvider>
         </AuthProvider>
     );

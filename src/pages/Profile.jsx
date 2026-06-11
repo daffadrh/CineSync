@@ -16,6 +16,7 @@ export default function Profile() {
     const [friends, setFriends] = useState([]);
     const [recommendations, setRecommendations] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const [editing, setEditing] = useState(false);
     const [editForm, setEditForm] = useState({ displayName: '', username: '', bio: '' });
@@ -24,16 +25,21 @@ export default function Profile() {
 
     useEffect(() => {
         async function load() {
-            const token = await currentUser.getIdToken();
-            const [profileData, friendsData, recsData] = await Promise.all([
-                getMyProfile(token),
-                getFriends(token, currentUser.uid),
-                getRecommendations(token),
-            ]);
-            setProfile(profileData.user);
-            setFriends(friendsData.friends);
-            setRecommendations(recsData.recommendations);
-            setLoading(false);
+            try {
+                const token = await currentUser.getIdToken();
+                const [profileData, friendsData, recsData] = await Promise.all([
+                    getMyProfile(token),
+                    getFriends(token, currentUser.uid),
+                    getRecommendations(token),
+                ]);
+                setProfile(profileData.user);
+                setFriends(friendsData.friends);
+                setRecommendations(recsData.recommendations);
+            } catch {
+                setError('Failed to load profile.');
+            } finally {
+                setLoading(false);
+            }
         }
         load();
     }, []);
@@ -74,6 +80,14 @@ export default function Profile() {
         return (
             <div className="flex justify-center py-20">
                 <i className="fa-solid fa-circle-notch fa-spin text-gray-500 text-2xl" />
+            </div>
+        );
+    }
+
+    if (error || !profile) {
+        return (
+            <div className="flex justify-center py-20">
+                <p className="text-gray-500 text-sm">{error ?? 'Failed to load profile.'}</p>
             </div>
         );
     }

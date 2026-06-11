@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getMovieDetails, IMG_BASE_URL } from '../services/tmdb-api.js';
+import { useAuth } from '../context/AuthContext.jsx';
 import { useWatchlist, STATUSES, STATUS_LABELS } from '../context/WatchlistContext.jsx';
 import ShareModal from './ShareModal.jsx';
 
 const BACKDROP_BASE_URL = 'https://image.tmdb.org/t/p/w1280';
 
 export default function MovieModal({ movie, onClose }) {
+    const navigate = useNavigate();
+    const { currentUser } = useAuth();
     const { watchlistMap, add, changeStatus, remove } = useWatchlist();
     const [details, setDetails] = useState(null);
     const [adding, setAdding] = useState(false);
@@ -123,7 +127,15 @@ export default function MovieModal({ movie, onClose }) {
                             </div>
                         )}
 
-                        {inWatchlist ? (
+                        {!currentUser ? (
+                            <button
+                                onClick={() => navigate('/login')}
+                                className="w-full flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black font-semibold py-2.5 rounded-lg transition-colors text-sm"
+                            >
+                                <i className="fa-solid fa-right-to-bracket" />
+                                Log In to Save & Recommend
+                            </button>
+                        ) : inWatchlist ? (
                             <>
                                 <div>
                                     <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Your status</p>
@@ -156,8 +168,8 @@ export default function MovieModal({ movie, onClose }) {
                                         onClick={() => setShareOpen(true)}
                                         className="flex items-center justify-center gap-2 bg-[#1f1f1f] hover:bg-[#252525] border border-[#2a2a2a] text-gray-300 hover:text-white font-medium py-2.5 px-4 rounded-lg transition-colors text-sm"
                                     >
-                                        <i className="fa-solid fa-share-nodes" />
-                                        Share
+                                        <i className="fa-solid fa-paper-plane" />
+                                        Recommend
                                     </button>
                                 </div>
                             </>
@@ -175,8 +187,8 @@ export default function MovieModal({ movie, onClose }) {
                                     onClick={() => setShareOpen(true)}
                                     className="flex items-center justify-center gap-2 bg-[#1f1f1f] hover:bg-[#252525] border border-[#2a2a2a] text-gray-300 hover:text-white font-medium py-2.5 px-4 rounded-lg transition-colors text-sm"
                                 >
-                                    <i className="fa-solid fa-share-nodes" />
-                                    Share
+                                    <i className="fa-solid fa-paper-plane" />
+                                    Recommend
                                 </button>
                             </div>
                         )}

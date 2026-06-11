@@ -67,6 +67,46 @@ export default function Home() {
         );
     }
 
+    if (!currentUser) {
+        return (
+            <div className="flex flex-col h-full">
+                <div className="flex-1 overflow-y-auto px-8 py-8">
+                    <div className="max-w-screen-xl mx-auto space-y-10">
+
+                        <WelcomeHero
+                            onLogin={() => navigate('/login')}
+                            onSignUp={() => navigate('/register')}
+                            onExplore={() => navigate('/discover')}
+                        />
+
+                        {/* Trending strip */}
+                        {trending.length > 0 && (
+                            <section>
+                                <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-4">
+                                    Trending This Week
+                                </p>
+                                <div className="flex gap-3 overflow-x-auto hide-scrollbar pb-2">
+                                    {trending.map(movie => (
+                                        <TrendingCard
+                                            key={movie.id}
+                                            movie={movie}
+                                            onClick={() => setSelectedMovie(movie)}
+                                        />
+                                    ))}
+                                </div>
+                            </section>
+                        )}
+
+                    </div>
+                </div>
+
+                {selectedMovie && (
+                    <MovieModal movie={selectedMovie} onClose={() => setSelectedMovie(null)} />
+                )}
+            </div>
+        );
+    }
+
     return (
         <div className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto px-8 py-8">
@@ -118,6 +158,40 @@ export default function Home() {
             {selectedMovie && (
                 <MovieModal movie={selectedMovie} onClose={() => setSelectedMovie(null)} />
             )}
+        </div>
+    );
+}
+
+function WelcomeHero({ onLogin, onSignUp, onExplore }) {
+    return (
+        <div className="flex flex-col items-center justify-center bg-[#141414] border border-[#2a2a2a] rounded-2xl p-12 text-center">
+            <h1 className="text-4xl font-serif font-bold text-white mb-3">
+                Welcome to <span className="italic text-yellow-500">CineSync</span>.
+            </h1>
+            <p className="text-gray-500 text-sm mb-6 max-w-md">
+                Track what you're watching, share clips, and get recommendations from friends.
+                Log in or sign up to build your watchlist.
+            </p>
+            <div className="flex gap-3 flex-wrap justify-center">
+                <button
+                    onClick={onLogin}
+                    className="px-5 py-2.5 bg-yellow-500 text-black text-sm font-semibold rounded-full hover:bg-yellow-400 transition-colors"
+                >
+                    Log In
+                </button>
+                <button
+                    onClick={onSignUp}
+                    className="px-5 py-2.5 bg-[#1f1f1f] border border-[#2a2a2a] text-gray-300 text-sm font-semibold rounded-full hover:bg-[#252525] hover:text-white transition-colors"
+                >
+                    Sign Up
+                </button>
+                <button
+                    onClick={onExplore}
+                    className="px-5 py-2.5 bg-[#1f1f1f] border border-[#2a2a2a] text-gray-300 text-sm font-semibold rounded-full hover:bg-[#252525] hover:text-white transition-colors"
+                >
+                    Browse Movies
+                </button>
+            </div>
         </div>
     );
 }
@@ -217,13 +291,13 @@ function HeroCard({ entry, details, onShare, onExplore }) {
                     </div>
                 </div>
 
-                {/* Share */}
+                {/* Recommend */}
                 <button
                     onClick={onShare}
                     className="self-start flex items-center gap-2 px-4 py-2 bg-[#1f1f1f] hover:bg-[#252525] border border-[#2a2a2a] text-gray-300 hover:text-white text-sm font-medium rounded-lg transition-colors mt-4"
                 >
-                    <i className="fa-solid fa-share-nodes text-xs" />
-                    Share
+                    <i className="fa-solid fa-paper-plane text-xs" />
+                    Recommend
                 </button>
             </div>
         </div>

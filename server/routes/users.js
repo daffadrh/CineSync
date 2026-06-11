@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { requireAuth } from "../middleware/auth.js";
-import { getOrCreateUser, updateUser, getUserById, getUserPublic, getFriends, removeFriend, searchUsersByUsername } from "../data/users.js";
+import { getOrCreateUser, updateUser, getUserPublic, getFriends, removeFriend, searchUsersByUsername } from "../data/users.js";
 import { friendRequestsRouter } from "./friendRequests.js";
 
 export const usersRouter = Router();
@@ -73,10 +73,6 @@ usersRouter.get('/:id', async (req, res) => {
 
 usersRouter.get('/:id/friends', async (req, res) => {
     try {
-        const user = await getUserById(req.params.id);
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
         const friends = await getFriends(req.params.id);
         res.json({ friends });
     } catch (error) {

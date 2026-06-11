@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useFriendRequests } from '../context/FriendRequestsContext.jsx';
 import { logoutUser } from '../services/auth.js';
 
 export default function Header() {
     const navigate = useNavigate();
     const { currentUser } = useAuth();
+    const { requests } = useFriendRequests();
     const initial = currentUser?.displayName?.[0]?.toUpperCase() ?? null;
     const [query, setQuery] = useState('');
 
@@ -42,29 +44,43 @@ export default function Header() {
             </form>
 
             <div className="flex-1 flex justify-end items-center gap-3">
-                <button
-                    onClick={() => navigate('/friends')}
-                    title="Friends"
-                    className="w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-[#1a1a1a] transition-colors"
-                >
-                    <i className="fa-solid fa-user-group text-sm" />
-                </button>
-                <div
-                    onClick={() => navigate('/profile')}
-                    className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center overflow-hidden border border-[#333] cursor-pointer flex-shrink-0"
-                >
-                    {initial
-                        ? <span className="text-white font-semibold text-sm">{initial}</span>
-                        : <i className="fa-solid fa-user text-gray-300" />
-                    }
-                </div>
-                <button
-                    onClick={handleLogout}
-                    title="Log out"
-                    className="w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-[#1a1a1a] transition-colors"
-                >
-                    <i className="fa-solid fa-arrow-right-from-bracket text-sm" />
-                </button>
+                {currentUser ? (
+                    <>
+                        <button
+                            onClick={() => navigate('/friends')}
+                            title="Friends"
+                            className="relative w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-[#1a1a1a] transition-colors"
+                        >
+                            <i className="fa-solid fa-user-group text-sm" />
+                            {requests.length > 0 && (
+                                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-yellow-500 rounded-full" />
+                            )}
+                        </button>
+                        <div
+                            onClick={() => navigate('/profile')}
+                            className="w-10 h-10 rounded-full bg-gray-600 flex items-center justify-center overflow-hidden border border-[#333] cursor-pointer flex-shrink-0"
+                        >
+                            {initial
+                                ? <span className="text-white font-semibold text-sm">{initial}</span>
+                                : <i className="fa-solid fa-user text-gray-300" />
+                            }
+                        </div>
+                        <button
+                            onClick={handleLogout}
+                            title="Log out"
+                            className="w-9 h-9 flex items-center justify-center rounded-full text-gray-400 hover:text-white hover:bg-[#1a1a1a] transition-colors"
+                        >
+                            <i className="fa-solid fa-arrow-right-from-bracket text-sm" />
+                        </button>
+                    </>
+                ) : (
+                    <button
+                        onClick={() => navigate('/login')}
+                        className="bg-yellow-500 hover:bg-yellow-400 text-black font-semibold text-sm px-4 py-2 rounded-lg transition-colors"
+                    >
+                        Log In
+                    </button>
+                )}
             </div>
         </header>
     );

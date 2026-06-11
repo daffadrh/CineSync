@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
 
 function NavItem({ to, icon, label, end, expanded }) {
     return (
@@ -29,6 +30,8 @@ function NavItem({ to, icon, label, end, expanded }) {
 }
 
 export default function Sidebar({ expanded, onToggle }) {
+    const { currentUser } = useAuth();
+
     return (
         <aside className={`bg-[#141414] border-r border-[#2a2a2a] flex flex-col h-full flex-shrink-0 transition-all duration-300 overflow-hidden ${expanded ? 'w-64' : 'w-[72px]'}`}>
 
@@ -40,7 +43,7 @@ export default function Sidebar({ expanded, onToggle }) {
                 >
                     <i className="fa-solid fa-bars" />
                 </button>
-                <span className={`text-2xl font-serif font-bold italic tracking-wide text-white whitespace-nowrap overflow-hidden transition-[max-width,opacity] duration-200 ${expanded ? 'max-w-[200px] opacity-100 pl-3' : 'max-w-0 opacity-0'}`}>
+                <span className={`text-2xl font-serif font-bold italic tracking-wide text-white whitespace-nowrap overflow-hidden transition-[max-width,opacity,padding-left] duration-200 ${expanded ? 'max-w-[200px] opacity-100 pl-3' : 'max-w-0 opacity-0 pl-0'}`}>
                     CineSync
                 </span>
             </div>
@@ -50,8 +53,12 @@ export default function Sidebar({ expanded, onToggle }) {
                     <NavItem to="/"          icon="fa-solid fa-house"        label="Home"           end expanded={expanded} />
                     <NavItem to="/discover"  icon="fa-regular fa-compass"    label="Discover"           expanded={expanded} />
                     <NavItem to="/clips"     icon="fa-solid fa-chart-column" label="Trending Clips"     expanded={expanded} />
-                    <NavItem to="/watchlist"       icon="fa-solid fa-list-ul"      label="Watchlist"        expanded={expanded} />
-                    <NavItem to="/recommendations" icon="fa-solid fa-paper-plane"  label="Recommendations"  expanded={expanded} />
+                    {currentUser && (
+                        <>
+                            <NavItem to="/watchlist"       icon="fa-solid fa-list-ul"      label="Watchlist"        expanded={expanded} />
+                            <NavItem to="/recommendations" icon="fa-solid fa-paper-plane"  label="Recommendations"  expanded={expanded} />
+                        </>
+                    )}
                 </nav>
             </div>
         </aside>

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
+import { useFriendRequests } from '../context/FriendRequestsContext.jsx';
 import {
     getFriends,
-    getFriendRequests,
     getOutgoingFriendRequests,
     sendFriendRequest,
     acceptFriendRequest,
@@ -13,10 +13,11 @@ import {
 
 export default function Friends() {
     const { currentUser } = useAuth();
+    const { requests, refresh: refreshRequests } = useFriendRequests();
 
     const [friends, setFriends] = useState([]);
-    const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
@@ -25,16 +26,19 @@ export default function Friends() {
 
     useEffect(() => {
         async function load() {
-            const token = await currentUser.getIdToken();
-            const [friendsData, requestsData, outgoingData] = await Promise.all([
-                getFriends(token, currentUser.uid),
-                getFriendRequests(token),
-                getOutgoingFriendRequests(token),
-            ]);
-            setFriends(friendsData.friends);
-            setRequests(requestsData.requests);
-            setSentRequests(new Set(outgoingData.sentUids));
-            setLoading(false);
+            try {
+                const token = await currentUser.getIdToken();
+                const [friendsData, outgoingData] = await Promise.all([
+                    getFriends(token, currentUser.uid),
+                    getOutgoingFriendRequests(token),
+                ]);
+                setFriends(friendsData.friends);
+                setSentRequests(new Set(outgoingData.sentUids));
+            } catch {
+                setError('Failed to load friends.');
+            } finally {
+                setLoading(false);
+            }
         }
         load();
     }, []);
@@ -58,14 +62,14 @@ export default function Friends() {
     async function handleAccept(request) {
         const token = await currentUser.getIdToken();
         await acceptFriendRequest(token, request.id);
-        setRequests(prev => prev.filter(r => r.id !== request.id));
         setFriends(prev => [...prev, { id: request.from.uid, ...request.from }]);
+        await refreshRequests();
     }
 
     async function handleReject(requestId) {
         const token = await currentUser.getIdToken();
         await rejectFriendRequest(token, requestId);
-        setRequests(prev => prev.filter(r => r.id !== requestId));
+        await refreshRequests();
     }
 
     async function handleRemove(friendId) {
@@ -80,6 +84,14 @@ export default function Friends() {
         return (
             <div className="flex justify-center items-center h-full">
                 <i className="fa-solid fa-circle-notch fa-spin text-gray-500 text-2xl" />
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="flex justify-center items-center h-full">
+                <p className="text-gray-500 text-sm">{error}</p>
             </div>
         );
     }

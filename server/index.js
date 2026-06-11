@@ -8,6 +8,7 @@ import { watchlistRouter } from './routes/watchlist.js';
 import { movieRouter } from './routes/tmdb.js';
 import { usersRouter } from './routes/users.js';
 import { recommendationsRouter } from './routes/recommendations.js';
+import { clipsRouter } from './routes/clips.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -23,6 +24,7 @@ app.use('/api/watchlist', watchlistRouter);
 app.use('/api/movies', movieRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/recommendations', recommendationsRouter);
+app.use('/api/clips', clipsRouter);
 
 app.listen(port, () => {
     console.log(`CineSync API is running on port ${port}`);
